@@ -1,0 +1,28 @@
+name: Verify source
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check every module
+        run: |
+          for f in src/*.js desktop/*.js server.js; do
+            echo "checking $f"
+            node --check "$f"
+          done
+      - name: Verify required release assets exist
+        run: |
+          test -f src/index.html
+          test -f src/app.js
+          test -f build/icon.ico
+          test -f electron-builder.yml
+          echo "scrAPPED Connect source looks good"
