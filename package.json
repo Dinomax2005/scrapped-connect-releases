@@ -19,7 +19,8 @@
     "build:win": "electron-builder --win --publish never --config electron-builder.yml",
     "release:patch": "npm version patch && git push --follow-tags",
     "verify": "node --check src/core.js && node --check src/app.js && node --check desktop/main.js && node --check desktop/updater.js",
-    "test": "node tools/smoke-test.js"
+    "test": "node tools/smoke-test.js",
+    "version": "node tools/set-version.js && git add src/core.js src/sw.js"
   },
   "devDependencies": {
     "electron": "^33.2.0",

@@ -284,7 +284,7 @@ const Dashboards = {
     const widgets = (dash.widgets || []).map(w => `<!-- widget:${w.id} -->
       ${Widgets.render(w, dash)}`).join('') ||
       `<div class="card widget-span-12" style="text-align:center;color:var(--text-muted);padding:36px">
-        This dashboard is empty.${canBuild ? ' Use <strong>Edit Layout</strong> to add widgets.' : ''}
+        This dashboard is empty.${canBuild ? ' Use <strong>🧩 Add Widget</strong> to build it up.' : ''}
       </div>`;
 
     return `

@@ -456,6 +456,44 @@ const App = {
     return out;
   },
 
+  /** Opens links safely in every runtime: browser tab, desktop shell or file:// copy. */
+  openExternal(url) {
+    if (window.ScrappedDesktop && window.ScrappedDesktop.openExternal) {
+      window.ScrappedDesktop.openExternal(url);
+      return;
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
+  },
+
+  /**
+   * Gives the user the Windows installer wherever the app is running:
+   * the local host serves it (or redirects to the GitHub release asset), the desktop build
+   * opens the release page, and a file:// copy falls back to GitHub.
+   */
+  downloadInstaller(kind) {
+    const file = kind === 'portable' ? 'SCRAPPED-Connect-Portable.zip' : 'SCRAPPED-Connect-Setup.exe';
+    const canUseHost = location.protocol === 'http:' || location.protocol === 'https:';
+    if (canUseHost && !(window.ScrappedDesktop && window.ScrappedDesktop.isDesktop)) {
+      Toast.show(`📥 Downloading ${Utils.esc(file)}…`, 'accent');
+      const a = document.createElement('a');
+      a.href = `/download/${file}`;
+      a.download = file;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      return;
+    }
+    const asset = Updater.pickInstallerAsset();
+    const url = (kind === 'portable' && asset) ? asset.url
+      : `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`;
+    if (kind !== 'portable' && Updater.isDesktop() && window.ScrappedDesktop.checkUpdate) {
+      Toast.show('🔄 Asking the updater for the newest installer…', 'accent');
+      Updater.check({ notify: true });
+      return;
+    }
+    App.openExternal(url);
+  },
+
   copyText(text) {
     const value = String(text || '');
     if (navigator.clipboard && navigator.clipboard.writeText) {

@@ -1,7 +1,7 @@
 SCRAPPED CONNECT - WINDOWS SETUP WIZARD
 =======================================
 Studio management, developer ranking and programming organizer
-for SCRAPPED studio.  Version 1.0.0
+for SCRAPPED studio.
 
 NO SERVER REQUIRED
 ------------------
@@ -21,7 +21,8 @@ WHAT THIS SETUP INSTALLS
   2. A desktop and Start-menu shortcut.
   3. The built-in auto-updater, which checks
      github.com/Dinomax2005/scrapped-connect-releases for newer
-     releases and installs them automatically.
+     releases and installs them automatically - so this copy always
+     keeps itself current without re-downloading by hand.
 
 FIRST RUN - SETUP WIZARD
 ------------------------

@@ -321,6 +321,30 @@ console.log('injected; parse errors:', errors.length);
     if (payload.sync.token) throw new Error('token present');
   });
 
+  console.log('\n== security hardening ==');
+  step('setup wizard cannot be re-run by a junior rank', () => {
+    const trainee = G('Store').data.users.find(u => u.username === 'kai.tech');
+    trainee.rankId = G('Store').data.ranks.find(r => r.level === 1).id;
+    A.impersonate(trainee.id);
+    const before = G('Store').data.users.length;
+    try {
+      G('Wizard').start(true);
+      if (!doc.getElementById('setup-wizard-backdrop').classList.contains('hidden')) {
+        throw new Error('trainee managed to open the setup wizard on a live workspace');
+      }
+      if (G('Store').data.users.length !== before) throw new Error('accounts changed');
+    } finally {
+      A.exitImpersonation();
+      trainee.rankId = G('Store').data.ranks.find(r => r.level === 2).id;
+    }
+  });
+  step('founder can re-run the setup wizard (non-destructively)', () => {
+    G('Wizard').start(true);
+    const open = !doc.getElementById('setup-wizard-backdrop').classList.contains('hidden');
+    G('Wizard').close();
+    if (!open) throw new Error('founder could not open the wizard');
+  });
+
   console.log('\n== global search ==');
   step('search modal lists matches', () => {
     A.handleGlobalSearch('riley');
