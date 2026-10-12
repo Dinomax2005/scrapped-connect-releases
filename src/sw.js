@@ -1,6 +1,6 @@
 /* SCRAPPED Connect — offline service worker.
  * Caches the whole app shell so the studio keeps working with no server and no internet. */
-const CACHE = 'scrapped-connect-v1.0.0';
+const CACHE = 'scrapped-connect-v1.0.1';
 const ASSETS = [
   './', './index.html', './styles.css', './manifest.webmanifest',
   './core.js', './views-dash.js', './views-team.js', './views-work.js', './views-system.js', './app.js',

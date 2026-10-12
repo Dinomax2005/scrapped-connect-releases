@@ -1,8 +1,8 @@
 {
   "name": "scrapped-connect",
   "productName": "SCRAPPED Connect",
-  "version": "1.0.0",
-  "description": "Serverless studio management, developer ranking & programming organizer for SCRAPPED studio \u2014 dashboards, accounts, ranks, tasks, sprints, bug tracking and a code vault, with no server and built-in GitHub auto-updates.",
+  "version": "1.0.1",
+  "description": "Serverless studio management, developer ranking & programming organizer for SCRAPPED studio — dashboards, accounts, ranks, tasks, sprints, bug tracking and a code vault, with no server and built-in GitHub auto-updates.",
   "main": "desktop/main.js",
   "author": {
     "name": "SCRAPPED studio",

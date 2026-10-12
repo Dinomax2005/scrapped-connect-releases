@@ -4,7 +4,7 @@
  * Copyright (c) SCRAPPED studio. All rights reserved.
  * ==========================================================================*/
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.0.1';
 const DATA_KEY = 'scrapped-connect-db-v1';
 const DEVICE_SESSION_KEY = 'scrapped-connect-session-v1';
 const GITHUB_OWNER = 'Dinomax2005';
