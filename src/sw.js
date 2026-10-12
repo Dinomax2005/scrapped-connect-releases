@@ -4,7 +4,7 @@
  * the device is online), falling back to the cached copy so the studio keeps working with
  * no server and no internet. GitHub traffic is never intercepted.
  */
-const CACHE = 'scrapped-connect-v1.0.1';
+const CACHE = 'scrapped-connect-v1.0.2';
 const ASSETS = [
   './', './index.html', './styles.css', './manifest.webmanifest',
   './core.js', './views-dash.js', './views-team.js', './views-work.js', './views-system.js', './app.js',
