@@ -1,0 +1,105 @@
+name: Build Windows Installer & Publish Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish a GitHub release from package.json version'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Package SCRAPPED Connect for Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Read app version
+        id: pkg
+        shell: bash
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build Windows installer + portable build
+        run: npx electron-builder --win --publish never --config electron-builder.yml
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      - name: List build output
+        shell: bash
+        run: ls -la release
+
+      - name: Upload installer artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SCRAPPED-Connect-Windows-${{ steps.pkg.outputs.version }}
+          path: |
+            release/*.exe
+            release/*.blockmap
+            release/latest.yml
+          if-no-files-found: error
+
+      - name: Publish GitHub release (tags only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: SCRAPPED Connect ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            ## SCRAPPED Connect ${{ github.ref_name }}
+
+            Serverless studio management, developer ranking and programming organizer
+            for **SCRAPPED studio**.
+
+            ### Download
+            - **`SCRAPPED-Connect-Setup.exe`** — the Windows setup wizard (recommended).
+              Installs SCRAPPED Connect, creates your shortcuts and enables the built-in
+              auto-updater.
+            - **`SCRAPPED-Connect-*-Portable.exe`** — run without installing.
+
+            ### Automatic updates
+            Every installed copy of SCRAPPED Connect checks this release page on launch
+            and inside **Updater & Setup .EXE**. When a newer tag is published here the
+            app downloads it and upgrades itself automatically — your studio data and
+            rankings are always preserved.
+
+            ### First run
+            The in-app **Setup Wizard** creates the studio workspace and your Founder
+            account (the first account is always the owner). Create the rest of the team
+            from *Accounts & Rerank*.
+          files: |
+            release/*.exe
+            release/latest.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish GitHub release (manual dispatch)
+        if: github.event_name == 'workflow_dispatch' && inputs.publish
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.pkg.outputs.version }}
+          name: SCRAPPED Connect v${{ steps.pkg.outputs.version }}
+          generate_release_notes: true
+          files: |
+            release/*.exe
+            release/latest.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

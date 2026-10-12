@@ -1,0 +1,42 @@
+SCRAPPED CONNECT - WINDOWS SETUP WIZARD
+=======================================
+Studio management, developer ranking and programming organizer
+for SCRAPPED studio.  Version 1.0.0
+
+NO SERVER REQUIRED
+------------------
+SCRAPPED Connect is a fully self-contained desktop application.
+All studio data (accounts, ranks, dashboards, tasks, sprints, bugs,
+code vault) is stored locally on this machine:
+
+    %APPDATA%\SCRAPPED Connect\scrapped-connect-data.json
+
+Optional "Serverless Sync" shares that workspace with your team
+through a private GitHub repository you own - no hosting, no
+subscription, no SCRAPPED server in the middle.
+
+WHAT THIS SETUP INSTALLS
+------------------------
+  1. The SCRAPPED Connect application files.
+  2. A desktop and Start-menu shortcut.
+  3. The built-in auto-updater, which checks
+     github.com/Dinomax2005/scrapped-connect-releases for newer
+     releases and installs them automatically.
+
+FIRST RUN - SETUP WIZARD
+------------------------
+When the app opens for the first time you will be guided through a
+six-step wizard:
+  1. Studio identity            (name + logo initials)
+  2. Founder account            (the FIRST account becomes you, the
+                                 Founder with full access)
+  3. Account recovery question
+  4. Optional GitHub team sync
+  5. Studio dashboards + sample data
+  6. Launch
+
+After that you can create accounts for every developer from
+"Accounts & Rerank", move people between ranks, build custom
+dashboards and rank the whole team.
+
+Click Next to install SCRAPPED Connect.

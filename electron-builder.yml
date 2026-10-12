@@ -1,0 +1,52 @@
+# SCRAPPED Connect — Windows packaging configuration
+# Build:  npm install  →  npx electron-builder --win --publish never
+# Produces: release/SCRAPPED-Connect-Setup.exe  (+ portable build)
+appId: studio.scrapped.connect
+productName: SCRAPPED Connect
+copyright: Copyright © SCRAPPED studio. All rights reserved.
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - package.json
+  - src/**/*
+  - desktop/**/*
+  - "!**/*.map"
+
+asar: true
+compression: maximum
+removePackageScripts: true
+
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: portable
+      arch: [x64]
+  icon: build/icon.ico
+  artifactName: SCRAPPED-Connect-${version}-Setup.${ext}
+  publisherName: SCRAPPED studio
+  legalTrademarks: SCRAPPED studio
+
+portable:
+  artifactName: SCRAPPED-Connect-${version}-Portable.exe
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: SCRAPPED Connect
+  runAfterFinish: true
+  deleteAppDataOnUninstall: false
+  license: build/setup-guide.txt
+  include: build/installer.nsh
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  installerHeaderIcon: build/icon.ico
+  differentialPackage: false
+  artifactName: SCRAPPED-Connect-Setup.${ext}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCRAPPED Connect — Studio & Developer OS | SCRAPPED studio</title>
+  <meta name="description" content="Serverless studio management, developer ranking and programming organizer for SCRAPPED studio. No server required." />
+  <meta name="theme-color" content="#8b5cf6" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-512.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="SCRAPPED Connect" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-logo" id="brand-logo-icon">S</div>
+        <div class="brand-meta">
+          <div class="brand-title" id="sidebar-studio-name">SCRAPPED studio</div>
+          <div class="brand-subtitle">
+            <span>⚡ CONNECT OS</span>
+            <span id="sidebar-version-label" style="opacity:0.8">v1.0.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-section-label">Studio Command</div>
+      <nav class="nav-list" id="sidebar-nav">
+        <button class="nav-item active" data-view="dashboards" onclick="App.navigate('dashboards')">
+          <span class="nav-item-left"><span class="nav-icon">📊</span><span>Company Dashboards</span></span>
+          <span class="nav-badge" id="badge-dashboards">3</span>
+        </button>
+        <button class="nav-item" data-view="team" onclick="App.navigate('team')">
+          <span class="nav-item-left"><span class="nav-icon">👥</span><span>Accounts & Rerank</span></span>
+          <span class="nav-badge" id="badge-team">0</span>
+        </button>
+        <button class="nav-item" data-view="ranks" onclick="App.navigate('ranks')">
+          <span class="nav-item-left"><span class="nav-icon">👑</span><span>Rank Hierarchy</span></span>
+          <span class="nav-badge" id="badge-ranks">7</span>
+        </button>
+
+        <div class="nav-section-label" style="padding-left:8px;margin-top:6px;">Programming Suite</div>
+        <button class="nav-item" data-view="tasks" onclick="App.navigate('tasks')">
+          <span class="nav-item-left"><span class="nav-icon">📋</span><span>Task & Kanban Board</span></span>
+          <span class="nav-badge" id="badge-tasks">0</span>
+        </button>
+        <button class="nav-item" data-view="sprints" onclick="App.navigate('sprints')">
+          <span class="nav-item-left"><span class="nav-icon">🚀</span><span>Sprints & Roadmap</span></span>
+          <span class="nav-badge" id="badge-sprints">0</span>
+        </button>
+        <button class="nav-item" data-view="bugs" onclick="App.navigate('bugs')">
+          <span class="nav-item-left"><span class="nav-icon">🐛</span><span>Bug & Issue Tracker</span></span>
+          <span class="nav-badge" id="badge-bugs">0</span>
+        </button>
+        <button class="nav-item" data-view="codevault" onclick="App.navigate('codevault')">
+          <span class="nav-item-left"><span class="nav-icon">💻</span><span>SCRAPPED Code Vault</span></span>
+          <span class="nav-badge" id="badge-codevault">0</span>
+        </button>
+
+        <div class="nav-section-label" style="padding-left:8px;margin-top:6px;">System & Releases</div>
+        <button class="nav-item" data-view="sync" onclick="App.navigate('sync')">
+          <span class="nav-item-left"><span class="nav-icon">☁️</span><span>Serverless Sync</span></span>
+          <span class="nav-badge" id="badge-sync">Local</span>
+        </button>
+        <button class="nav-item" data-view="updater" onclick="App.navigate('updater')">
+          <span class="nav-item-left"><span class="nav-icon">🔄</span><span>Updater & Setup .EXE</span></span>
+          <span class="nav-badge" id="badge-updater">v1.0.0</span>
+        </button>
+        <button class="nav-item" data-view="settings" onclick="App.navigate('settings')">
+          <span class="nav-item-left"><span class="nav-icon">⚙️</span><span>Studio Settings</span></span>
+        </button>
+        <button class="nav-item" data-view="profile" onclick="App.navigate('profile')">
+          <span class="nav-item-left"><span class="nav-icon">🧑‍💻</span><span>My Profile</span></span>
+        </button>
+      </nav>
+
+      <!-- Current User Profile Footer -->
+      <div class="sidebar-footer">
+        <div class="user-profile-card" id="sidebar-user-card">
+          <div class="avatar-circle" id="current-user-avatar" style="background:#8b5cf6">F</div>
+          <div class="user-info-text">
+            <div class="user-info-name" id="current-user-name">Not Initialized</div>
+            <div class="user-info-rank" id="current-user-rank">Run Setup Wizard</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-secondary btn-sm" style="flex:1" onclick="App.openSwitchAccountModal()" title="Switch logged-in account or preview as another developer">
+            🔐 Switch / Login
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="App.openSetupWizard(true)" title="Open Studio Setup Wizard">
+            🧙‍♂️ Wizard
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <div class="main-area">
+      <!-- Auto-Updater Notification Banner -->
+      <div class="update-banner hidden" id="github-update-banner">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:18px;">🚀</span>
+          <div>
+            <strong id="update-banner-title">New GitHub Release Available!</strong>
+            <span id="update-banner-desc" style="margin-left:8px;color:var(--text-secondary);">
+              A newer version was detected on Dinomax2005/scrapped-connect-releases.
+            </span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="btn btn-primary btn-sm" onclick="App.triggerAutoUpdate()">⚡ Auto-Update Now</button>
+          <button class="btn btn-secondary btn-sm" onclick="App.navigate('updater')">View Release</button>
+        </div>
+      </div>
+
+      <!-- Impersonation / Preview Mode Banner -->
+      <div class="impersonation-banner hidden" id="impersonation-banner">
+        <div>
+          👁️ <strong>Preview Mode Active:</strong> You are currently viewing SCRAPPED Connect as
+          <strong id="impersonation-target-name">Developer</strong>. Permissions and dashboard visibility reflect their rank.
+        </div>
+        <button class="btn btn-secondary btn-xs" onclick="App.exitImpersonation()">Return to Founder Account</button>
+      </div>
+
+      <!-- Top Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-heading" id="topbar-title">Company Dashboards</h1>
+          <span class="pill pill-accent" id="topbar-runtime-badge">⚡ Serverless Active</span>
+          <span class="pill pill-success" id="topbar-update-pill" onclick="App.checkForGitHubUpdates(true)" style="cursor:pointer" title="Click to check GitHub Releases for updates">
+            ✓ Up to Date (v1.0.0)
+          </span>
+        </div>
+
+        <div class="topbar-right">
+          <div class="search-box">
+            <span class="search-box-icon">🔍</span>
+            <input type="text" id="global-search-input" placeholder="Search devs, tasks, bugs, code..." oninput="App.handleGlobalSearch(this.value)" />
+          </div>
+          <a href="/download/SCRAPPED-Connect-Setup.exe" download class="btn btn-primary btn-sm" title="Download Windows Installer Setup Wizard (.exe)">
+            📥 Download Setup .EXE
+          </a>
+        </div>
+      </header>
+
+      <!-- Main Dynamic Viewport -->
+      <main class="content-viewport" id="main-viewport"></main>
+    </div>
+  </div>
+
+  <!-- Setup Wizard Modal -->
+  <div class="modal-backdrop hidden" id="setup-wizard-backdrop">
+    <div class="modal-card modal-lg" id="setup-wizard-card"></div>
+  </div>
+
+  <!-- Generic Action Modal -->
+  <div class="modal-backdrop hidden" id="action-modal-backdrop">
+    <div class="modal-card" id="action-modal-card"></div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="core.js"></script>
+  <script src="views-dash.js"></script>
+  <script src="views-team.js"></script>
+  <script src="views-work.js"></script>
+  <script src="views-system.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

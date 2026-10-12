@@ -1,0 +1,28 @@
+{
+  "name": "scrapped-connect",
+  "productName": "SCRAPPED Connect",
+  "version": "1.0.0",
+  "description": "Serverless studio management, developer ranking & programming organizer for SCRAPPED studio \u2014 dashboards, accounts, ranks, tasks, sprints, bug tracking and a code vault, with no server and built-in GitHub auto-updates.",
+  "main": "desktop/main.js",
+  "author": {
+    "name": "SCRAPPED studio",
+    "email": "studio@scrapped.local"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dinomax2005/scrapped-connect-releases.git"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "electron .",
+    "build:win": "electron-builder --win --publish never --config electron-builder.yml",
+    "release:patch": "npm version patch && git push --follow-tags",
+    "verify": "node --check src/core.js && node --check src/app.js && node --check desktop/main.js && node --check desktop/updater.js",
+    "test": "node tools/smoke-test.js"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  }
+}
