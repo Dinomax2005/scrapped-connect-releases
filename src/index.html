@@ -142,9 +142,9 @@
             <span class="search-box-icon">🔍</span>
             <input type="text" id="global-search-input" placeholder="Search devs, tasks, bugs, code..." oninput="App.handleGlobalSearch(this.value)" />
           </div>
-          <a href="/download/SCRAPPED-Connect-Setup.exe" download class="btn btn-primary btn-sm" title="Download Windows Installer Setup Wizard (.exe)">
+          <button class="btn btn-primary btn-sm" onclick="App.downloadInstaller('setup')" title="Download the Windows installer (setup wizard .exe)">
             📥 Download Setup .EXE
-          </a>
+          </button>
         </div>
       </header>
 

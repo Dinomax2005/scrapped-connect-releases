@@ -9,6 +9,12 @@ const Wizard = {
 
   start(force) {
     if (Store.data.meta.initialized && !force) return;
+    // A shared workspace must not let a junior re-run setup and mint themselves an owner account.
+    const alreadySetUp = Store.data.meta.initialized && Store.data.users.length > 0;
+    if (alreadySetUp && force && !Auth.can('manageAccounts')) {
+      Toast.show('⛔ Only the Founder (or a manager rank) can re-run the Setup Wizard in a live workspace.', 'danger', 4500);
+      return;
+    }
     Wizard.step = 1;
     Wizard.draft = {
       studioName: Store.data.settings.studioName || 'SCRAPPED studio',
@@ -112,7 +118,13 @@ const Wizard = {
         <button class="btn btn-primary" onclick="Wizard.next()">Let's go →</button>`;
 
     } else if (Wizard.step === 2) {
+      const existing = Store.data.users.length;
       body = `
+        ${existing ? `<div class="card" style="background:var(--warning-soft);border-color:rgba(245,158,11,.4);margin-bottom:14px;font-size:12.5px">
+          ⚠️ This workspace already has <strong>${existing} account${existing === 1 ? '' : 's'}</strong>.
+          Finishing the wizard adds <strong>another owner-level account</strong> — use it only for recovery or a second studio lead.
+          Dashboards, tasks and existing accounts are kept.
+        </div>` : ''}
         <div style="margin-bottom:16px">
           <div style="font-size:16px;font-weight:800">👑 Create the Founder account</div>
           <div style="font-size:12.5px;color:var(--text-secondary)">
@@ -538,8 +550,8 @@ token:  &lt;shared read/write token&gt;</div>
         <div style="display:flex;flex-direction:column;gap:8px;min-width:230px">
           ${asset ? `<div style="font-size:12px;color:var(--text-secondary)">Installer: <strong>${Utils.esc(asset.name)}</strong>${asset.size ? ` · ${Utils.bytes(asset.size)}` : ''}</div>` : ''}
           <button class="btn btn-primary" onclick="Updater.apply()">${desktop ? '⚡ Download & Install Automatically' : '⚡ Update Now (refresh web build)'}</button>
-          ${asset ? `<a class="btn btn-secondary" href="${Utils.esc(asset.url)}" download>📥 Download Installer Manually</a>` : ''}
-          ${u.htmlUrl ? `<a class="btn btn-secondary" href="${Utils.esc(u.htmlUrl)}" target="_blank" rel="noreferrer">🌐 View Release on GitHub</a>` : ''}
+          ${asset ? `<button class="btn btn-secondary" onclick="App.openExternal('${Utils.esc(asset.url)}')">📥 Download Installer Manually</button>` : ''}
+          ${u.htmlUrl ? `<button class="btn btn-secondary" onclick="App.openExternal('${Utils.esc(u.htmlUrl)}')">🌐 View Release on GitHub</button>` : ''}
         </div>
       </div>
     </div>` : ''}
@@ -578,8 +590,8 @@ token:  &lt;shared read/write token&gt;</div>
           The setup wizard installer boots the app, runs the first-time setup and wires the auto-updater to your GitHub releases.
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <a class="btn btn-primary btn-sm" href="/download/SCRAPPED-Connect-Setup.exe" download>📥 Download Setup .EXE</a>
-          <a class="btn btn-secondary btn-sm" href="/download/SCRAPPED-Connect-Portable.zip" download>🗜️ Download Portable .ZIP</a>
+          <button class="btn btn-primary btn-sm" onclick="App.downloadInstaller('setup')">📥 Download Setup .EXE</button>
+          <button class="btn btn-secondary btn-sm" onclick="App.downloadInstaller('portable')">🗜️ Download Portable .ZIP</button>
         </div>
         <div class="code-block" style="margin-top:12px">Reinstall / update anytime:
 run the new setup → it upgrades in place and keeps your data.</div>
