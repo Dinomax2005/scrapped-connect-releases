@@ -16,6 +16,8 @@ The website bundle contains only the public project URL and publishable key. Nev
 
 ## Hosting
 
-This repository is not deployed to a public domain yet. Upload the bundle to an HTTPS static host, then add the final site URL to **Supabase → Authentication → URL Configuration**. Localhost and common preview hosts are already allowed for testing.
+Lately is live on GitHub Pages at <https://dinomax2005.github.io/scrapped-connect-releases/>. The Pages workflow also publishes `lately-website.zip` at <https://dinomax2005.github.io/scrapped-connect-releases/lately-website.zip>. This repository’s Pages environment allows the active deployment branch; pushes to that branch publish an updated static site.
+
+If you move to a custom domain, add its URL to **Supabase → Authentication → URL Configuration** before using email links there.
 
 The Electron packaging files in the repository are legacy tooling for the earlier SCRAPPED Connect desktop app. Lately’s supported download is the static website ZIP.

@@ -6,6 +6,8 @@ Lately is a small social website with a readable feed, familiar people, and room
 
 ## Try it here
 
+**Live website:** <https://dinomax2005.github.io/scrapped-connect-releases/> · **Download:** <https://dinomax2005.github.io/scrapped-connect-releases/lately-website.zip>
+
 For a local preview, use Node.js 18 or newer:
 
 ```bash
@@ -31,7 +33,7 @@ The initial feed includes fictional sample people and posts so it isn’t empty 
 
 ## Hosting and email setup
 
-The app is currently a **downloadable website bundle and local preview**, not a public deployment. To use it from anywhere, upload it to an HTTPS static host such as Vercel, Netlify, or GitHub Pages. Supabase’s redirect allow-list currently includes localhost and common preview hosts; add your final custom domain in **Supabase → Authentication → URL Configuration** before inviting people.
+The site is deployed on **GitHub Pages** at <https://dinomax2005.github.io/scrapped-connect-releases/>. The deployment workflow publishes the static app and ZIP from the current session branch. Supabase’s redirect allow-list includes GitHub Pages, localhost, and common preview hosts; add any custom domain in **Supabase → Authentication → URL Configuration** before using it.
 
 Email confirmation and password recovery use Supabase Auth. Configure a reliable custom SMTP provider in the Supabase dashboard before a public launch; the default email sender is intended for development and may be rate-limited. No email is sent by the app itself.
 
