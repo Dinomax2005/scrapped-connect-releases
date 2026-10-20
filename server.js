@@ -263,7 +263,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (pathname === '/health' || pathname === '/api/health') {
-    return send(res, 200, JSON.stringify({ ok: true, app: 'SCRAPPED Connect', version, uptime: process.uptime() }), { 'Content-Type': 'application/json' });
+    return send(res, 200, JSON.stringify({ ok: true, app: 'Lately', version, uptime: process.uptime() }), { 'Content-Type': 'application/json' });
   }
 
   if (pathname === '/api/updates' || pathname === '/api/update') {
@@ -288,6 +288,15 @@ const server = http.createServer(async (req, res) => {
       assets: latest ? (latest.assets || []).map((a) => ({ name: a.name, size: a.size, downloads: a.download_count, url: a.browser_download_url })) : []
     };
     return send(res, 200, JSON.stringify(payload, null, 2), { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+  }
+
+  if (pathname === '/lately-website.zip' || pathname === '/download/lately-website.zip') {
+    const websiteZip = path.join(ROOT, 'lately-website.zip');
+    if (!fs.existsSync(websiteZip)) return send(res, 404, 'Website bundle has not been built yet.', { 'Content-Type': 'text/plain; charset=utf-8' });
+    return fs.readFile(websiteZip, (error, data) => {
+      if (error) return send(res, 500, 'Could not read the website bundle.', { 'Content-Type': 'text/plain; charset=utf-8' });
+      return send(res, 200, data, { 'Content-Type': 'application/zip', 'Content-Disposition': 'attachment; filename="lately-website.zip"' });
+    });
   }
 
   if (pathname.startsWith('/download/')) {
@@ -372,12 +381,9 @@ server.listen(PORT, HOST, () => {
   const nets = os.networkInterfaces();
   const lan = Object.values(nets).flat().filter((n) => n && n.family === 'IPv4' && !n.internal).map((n) => n.address);
   console.log('');
-  console.log('  SCRAPPED Connect — Studio OS  v' + appVersion());
+  console.log('  Lately — social app preview  v' + appVersion());
   console.log('  ─────────────────────────────────────────────');
   console.log('   Local:    http://localhost:' + PORT);
-  if (lan.length) console.log('   Network:  http://' + lan[0] + ':' + PORT + '   (share with your developers)');
-  console.log('   Installer: http://localhost:' + PORT + '/download/SCRAPPED-Connect-Setup.exe');
-  console.log('   Portable:  http://localhost:' + PORT + '/download/SCRAPPED-Connect-Portable.zip');
-  console.log('   Updates:   http://localhost:' + PORT + '/api/updates');
+  if (lan.length) console.log('   Network:  http://' + lan[0] + ':' + PORT + '   (preview only; deploy over HTTPS for accounts)');
   console.log('');
 });

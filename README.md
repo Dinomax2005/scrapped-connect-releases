@@ -1,150 +1,54 @@
-# SCRAPPED Connect
+# Lately
 
-**The serverless studio operating system for [SCRAPPED studio](https://github.com/Dinomax2005).**
-Accounts, rank hierarchy, developer ranking, custom company dashboards, tasks, sprints,
-bugs and a shared code vault — **with no server to run, and no monthly bill.**
+**A quieter place to share the things you want to remember.**
 
-- 🧙‍♂️ **Six-step Setup Wizard** — creates the workspace and makes *your* first account the **Founder** (level 7 owner).
-- 👥 **Account management** — create, edit, disable and delete developer accounts; the Founder controls everything.
-- 👑 **Rank hierarchy & reranking** — 7 default SCRAPPED ranks with editable permissions, plus bulk rerank, promotion helper and a live ranking board.
-- 📊 **Company dashboards** — three built-in studio dashboards plus a widget builder (KPI rows, charts, ranking boards, activity feeds, notes) with rank-restricted visibility.
-- 💻 **Programming suite** — Kanban task board, sprint roadmap, bug/issue tracker with severities, and the SCRAPPED Code Vault.
-- ☁️ **Serverless team sync** — optional GitHub-repo-as-a-database so every workstation shares one workspace without hosting anything.
-- 🔄 **Auto-updater** — checks the GitHub releases of this repository and updates the installed app automatically.
-- 📴 **Offline-first** — a PWA + desktop app that keeps working with no internet; data lives in local storage and a real file on disk.
+Lately is a small social website with a readable feed, familiar people, and room for ordinary life. It’s built with plain HTML, CSS, and JavaScript, with Supabase providing shared accounts and data across devices.
 
----
+## Try it here
 
-## 1. Install it
-
-### Option A — Live web app (fastest, no install)
-
-Open the studio link that was shared with you, then use your browser's
-**Install app** button (Chrome/Edge address bar) to pin it as a desktop app.
-Everything runs locally in your browser — the PWA service worker makes it work offline.
-
-### Option B — Windows desktop app (recommended for your workstation)
-
-1. Open **Releases** → [`Dinomax2005/scrapped-connect-releases`](https://github.com/Dinomax2005/scrapped-connect-releases/releases)
-2. Download **`SCRAPPED-Connect-Setup.exe`**
-3. Run it — the setup wizard installs the app, creates your shortcuts and enables the auto-updater.
-
-> The installer is produced automatically by the **Build Windows Installer** GitHub Actions
-> workflow (`.github/workflows/build-windows.yml`). Every developer downloads the same file.
-
-### Option C — Portable ZIP
-
-Download `SCRAPPED-Connect-Portable.zip` (from Releases, or from the running host at
-`/download/SCRAPPED-Connect-Portable.zip`) and either run `src/index.html` directly or
-start the tiny local host:
+For a local preview, use Node.js 18 or newer:
 
 ```bash
-node server.js          # then open http://localhost:3000
+npm start
 ```
 
----
+Then open <http://localhost:3000>. The account service is hosted separately, so you can sign in from another browser or device once the site is served from an HTTPS host.
 
-## 2. First run — the Setup Wizard
+## Download the website
 
-The wizard appears the first time the app starts and walks through:
+The ready-to-host static site is in **`lately-website.zip`** (also served by the local preview at <http://localhost:3000/download/lately-website.zip>). Extract it and upload the files inside `lately/` to an HTTPS static host. You can also run `python3 -m http.server 8000` from the extracted folder for a local preview.
 
-| Step | What it does |
-| --- | --- |
-| 1. Studio | Studio name + logo initials used across the UI |
-| 2. Founder | Creates **your** account — the *first* account always becomes the **Founder (level 7)** with full permissions |
-| 3. Recovery | Security question so the master password can be reset locally (no server needed) |
-| 4. Cloud Sync | Optional GitHub sync so your team shares one workspace |
-| 5. Content | Creates the three studio dashboards and (optionally) sample accounts/work items |
-| 6. Finish | You land on **Company Dashboards** as the Founder |
+The bundle contains the public Supabase project URL and publishable key. Those are browser-safe; do **not** put a Supabase `service_role` or secret key in the website. The database uses row-level security to protect user-owned changes.
 
-Afterwards, everything is editable in-app: **Studio Settings**, **Accounts & Rerank**,
-**Rank Hierarchy**, and the dashboard builder.
+## What works
 
----
+- Email sign-up and multi-device sign-in; confirmation, password-reset, and password-change flows (confirmation/reset email delivery requires SMTP setup).
+- Profiles, profile photos, the shared feed, text/photo posts, likes, replies, follows, saved posts, and notifications.
+- Search, responsive layouts, and an installable PWA shell.
+- Supabase Storage for uploaded photos; names, usernames, bios, and uploaded photos are publicly readable. Posts require a signed-in account, and email addresses are not exposed in profiles.
 
-## 3. Running the studio
+The initial feed includes fictional sample people and posts so it isn’t empty on first launch.
 
-| Area | Where | Highlights |
-| --- | --- | --- |
-| Company Dashboards | Sidebar → *Company Dashboards* | 3 built-in templates + custom dashboards, widgets, CSV export |
-| Accounts | *Accounts & Rerank* | Create/edit accounts, temp passwords, disable, delete, activity log |
-| Reranking | *Accounts & Rerank* / *Rank Hierarchy* | Per-dev rerank, bulk rerank, promotion helper, permission matrix |
-| Tasks | *Task & Kanban Board* | Drag & drop across Backlog → Done, priority, tags, estimates |
-| Sprints | *Sprints & Roadmap* | Milestones, progress bars, task linking, status transitions |
-| Bugs | *Bug & Issue Tracker* | Severity, statuses, reproduction steps, build/environment |
-| Code Vault | *SCRAPPED Code Vault* | Shared snippets by language, tags, copy-to-clipboard |
-| Sync | *Serverless Sync* | GitHub repo as datastore, push/pull, connection tester |
-| Updates | *Updater & Setup .EXE* | Version check, one-click update, backup/restore, release publishing guide |
+## Hosting and email setup
 
-**Ranking:** closing a task, fixing a bug or adding a snippet awards XP
-(configurable in *Studio Settings*). The leaderboard, rank positions and the promotion
-helper all recompute instantly. Only the Founder can change *who* holds which rank.
+The app is currently a **downloadable website bundle and local preview**, not a public deployment. To use it from anywhere, upload it to an HTTPS static host such as Vercel, Netlify, or GitHub Pages. Supabase’s redirect allow-list currently includes localhost and common preview hosts; add your final custom domain in **Supabase → Authentication → URL Configuration** before inviting people.
 
----
+Email confirmation and password recovery use Supabase Auth. Configure a reliable custom SMTP provider in the Supabase dashboard before a public launch; the default email sender is intended for development and may be rate-limited. No email is sent by the app itself.
 
-## 4. Serverless team sync (optional)
+## Backend
 
-No server, no hosting: **your own GitHub repository is the database.**
+A separate Supabase project named **Lately Social** was created for this website. It stores profiles, posts, likes, replies, follows, saved posts, notifications, and uploaded media. The existing Supabase project for another app was left untouched.
 
-1. Open *Serverless Sync* → paste `owner/repo`, a branch, the data path and a
-   **fine-grained personal access token** with *Contents: Read and write*.
-2. Press **Test Connection**, then **Push Now** to create the shared workspace.
-3. Each developer installs the same app, enters the same repo/branch/path/token and presses
-   **Pull Now** — then logs in with the account you created for them.
+- `src/config.js` — Supabase project URL and **public** publishable key
+- `src/cloud.js` — browser auth, REST data access, and photo uploads
+- `src/app.js` — UI and interaction flows
+- `src/sw.js` — offline app-shell cache
+- `server.js` — zero-dependency local preview host
+- `lately-website.zip` — static website download bundle
 
-The token stays on each machine and is stripped from the synced payload, so teammates never
-receive your credentials. See [`docs/TEAM-SYNC.md`](docs/TEAM-SYNC.md).
-
----
-
-## 5. Updates
-
-* Updater & Setup .EXE → **Check for Updates** reads the newest release from this repository.
-* Desktop build: downloads `SCRAPPED-Connect-Setup.exe`, runs it and restarts automatically — studio data is preserved.
-* Web/PWA build: clears the cache and reloads the newest build.
-* Publish a new version by pushing a tag: `npm version patch && git push --follow-tags`
-  → GitHub Actions builds the installer, attaches it to the release, and every installed
-  copy updates itself.
-
-Details: [`docs/UPDATES.md`](docs/UPDATES.md).
-
----
-
-## 6. Development
+Run the checks with:
 
 ```bash
-node server.js                      # local host + download endpoints (no dependencies)
-npm install                         # only needed for desktop builds
-npm run dev                         # launch the Electron desktop shell
-npm run build:win                   # build release/SCRAPPED-Connect-Setup.exe
-npx electron-builder --win --publish never --config electron-builder.yml
-npm install --no-save jsdom && node tools/smoke-test.js   # headless app test suite
+npm test
+npm run verify
 ```
-
-### Project structure
-
-```
-src/                    web/PWA app (also the renderer inside the desktop shell)
-  core.js               store, crypto/PBKDF2, permissions, sync engine, updater engine
-  views-dash.js         dashboards + widget system
-  views-team.js         accounts, reranking, rank hierarchy
-  views-work.js         tasks, sprints, bugs, code vault
-  views-system.js       setup wizard, sync UI, updater UI, settings
-  app.js                shell, router, auth screens, bootstrap
-desktop/                Electron main process, preload bridge, GitHub auto-updater
-build/                  icon, NSIS extras, installer setup guide
-server.js               zero-dependency local host: web build + /download + /api/updates
-electron-builder.yml    Windows packaging (NSIS setup wizard + portable build)
-tools/smoke-test.js     headless end-to-end test of the whole app
-```
-
-### Security notes
-
-* Passwords are hashed with **PBKDF2-SHA256** (120,000 iterations via WebCrypto, JS fallback for `file://`).
-* Security answers are stored as salted HMAC hashes.
-* The GitHub token never leaves the device and is removed from the synced workspace file.
-* All rendering escapes user input (`Utils.esc`) to prevent HTML injection.
-
----
-
-© SCRAPPED studio — built for organizing, ranking and shipping together.

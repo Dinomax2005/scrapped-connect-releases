@@ -1,24 +1,19 @@
 {
-  "name": "SCRAPPED Connect — Studio OS",
-  "short_name": "SCRAPPED",
-  "description": "Serverless studio management, developer ranking and programming organizer for SCRAPPED studio.",
+  "name": "Lately — life, as it happens",
+  "short_name": "Lately",
+  "description": "A quieter place to share the things you want to remember.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone"],
   "orientation": "any",
-  "background_color": "#090a0f",
-  "theme_color": "#8b5cf6",
-  "categories": ["productivity", "developer", "business"],
+  "background_color": "#f5f3ed",
+  "theme_color": "#f5f3ed",
+  "categories": ["social", "lifestyle"],
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "icons/lately-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ],
-  "screenshots": [],
   "shortcuts": [
-    { "name": "Company Dashboards", "url": "./index.html#dashboards" },
-    { "name": "Task Board", "url": "./index.html#tasks" },
-    { "name": "Accounts & Rerank", "url": "./index.html#team" }
+    { "name": "Home", "url": "./index.html" },
+    { "name": "Discover", "url": "./index.html#discover" }
   ]
 }
